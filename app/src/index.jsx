@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import styles from './styles.less'
 
-var TSTextSidebar = React.createClass({
+var CommentsSidebar = React.createClass({
   render: function() {
     return (
       <div className={styles.sidebar}>
@@ -21,7 +21,8 @@ var TSTextSidebar = React.createClass({
 });
 
 // #TODO: should it really be a <textarea> or just content-editable?
-var TSTextArea = React.createClass({
+// #TODO: better names for the components!
+var DETextArea = React.createClass({
   getInitialState: function() {
     return {
       text: "When in the Course of human events[[i stole this tbh]], it becomes necessary for one people to dissolve the political bands which have connected them with another, and to assume among the powers of the earth [[lol can you imagine]], the separate and equal station to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation.",
@@ -61,7 +62,7 @@ var TSTextArea = React.createClass({
           onChange={this.handleTextChange}
           value={this.state.text}
           />
-        <TSTextSidebar
+        <CommentsSidebar
           items={this.state.metadata}
           />
       </div>
@@ -73,7 +74,7 @@ export default class App extends Component {
   render() {
     return (
       <form className={styles.mainForm}>
-        <TSTextArea />
+        <DETextArea />
       </form>
     );
   }

@@ -1,7 +1,7 @@
 {
-  "name": "textual-seduction",
+  "name": "dark-edits",
   "version": "0.0.1",
-  "description": "idk",
+  "description": "an opinionated text editor",
   "main": "main.js",
   "scripts": {
     "start": "ENV=dev webpack --config webpack.config.dev && electron .",
@@ -14,7 +14,7 @@
       "react"
     ]
   },
-  "homepage": "https://github.com/dark-industries/textual-seduction",
+  "homepage": "https://github.com/dark-industries/dark-edits",
   "devDependencies": {
     "babel-cli": "^6.11.4",
     "babel-loader": "^6.2.4",
