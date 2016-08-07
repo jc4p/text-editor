@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>TS test bed</title>
+  </head>
+  <body>
+    <div id="root">
+      <!-- React bundle will replace contents of this div -->
+    </div>
+  </body>
+
+  <script>
+    // You can also require other files to run in this process
+    (function() {
+      const script = document.createElement('script');
+      script.src = process.env.ENV === 'dev' ? 'http://localhost:9000/dist/bundle.js' : './dist/bundle.js';
+      document.write(script.outerHTML);
+    }());
+  </script>
+</html>

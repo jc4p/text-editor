@@ -1,0 +1,41 @@
+{
+  "name": "textual-seduction",
+  "version": "0.0.1",
+  "description": "idk",
+  "main": "main.js",
+  "scripts": {
+    "start": "ENV=dev webpack --config webpack.config.dev && electron .",
+    "dev": "concurrently -k 'babel-node server.js' 'npm start'"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "stage-0",
+      "react"
+    ]
+  },
+  "homepage": "https://github.com/dark-industries/textual-seduction",
+  "devDependencies": {
+    "babel-cli": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "babel-polyfill": "^6.13.0",
+    "babel-preset-es2015": "^6.13.2",
+    "babel-preset-react": "^6.11.1",
+    "babel-preset-stage-0": "^6.5.0",
+    "concurrently": "^2.2.0",
+    "css-loader": "^0.23.1",
+    "electron-prebuilt": "^1.2.0",
+    "express": "^4.14.0",
+    "less": "^2.7.1",
+    "less-loader": "^2.2.3",
+    "moment": "^2.14.1",
+    "postcss-loader": "^0.9.1",
+    "react": "^15.3.0",
+    "react-dom": "^15.3.0",
+    "style-loader": "^0.13.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-middleware": "^1.6.1",
+    "webpack-hot-middleware": "^2.12.2",
+    "webpack-target-electron-renderer": "^0.4.0"
+  }
+}
