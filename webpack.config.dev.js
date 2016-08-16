@@ -21,6 +21,10 @@ var config = {
       loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!less'
     },
     {
+      test: /Draft\.css$/,
+      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
+    },
+    {
       test: /\.png|\.svg$/,
       loaders: ['file-loader']
     }]
