@@ -9,15 +9,29 @@ import styles from './styles.less'
 const defaultText = "When in the Course of human events[[i stole this tbh]], it becomes necessary for one people to dissolve the political bands which have connected them with another, and to assume among the powers of the earth [[lol can you imagine]], the separate and equal station to which the Laws of Nature and of Nature's God entitle them, a decent respect to the opinions of mankind requires that they should declare the causes which impel them to the separation[[also checkout http://butts.com]].";
 
 const noteRegex = /\[\[(.+?)\]\]/g;
+const italicRegex = /_.+?_/g;
+const boldRegex = /\*.+?\*/g;
 
-function noteSearchStrategy(contentBlock, callback) {
+function searchStrategy(regex, contentBlock, callback) {
   let text = contentBlock.getText();
   let matchArr, start;
-  while ((matchArr = noteRegex.exec(text)) !== null) {
+  while ((matchArr = regex.exec(text)) !== null) {
     start = matchArr.index;
     callback(start, start + matchArr[0].length, matchArr[1]);
     text = contentBlock.getText();
   }
+}
+
+function noteSearchStrategy(contentBlock, callback) {
+  searchStrategy(noteRegex, contentBlock, callback);
+}
+
+function italicSearchStrategy(contentBlock, callback) {
+  searchStrategy(italicRegex, contentBlock, callback);
+}
+
+function boldSearchStrategy(contentBlock, callback) {
+  searchStrategy(boldRegex, contentBlock, callback);
 }
 
 function findNoteEntities(contentBlock, callback) {
@@ -63,14 +77,36 @@ class InlineNoteComponent extends Component {
   }
 }
 
+class InlineItalicComponent extends Component {
+  render() {
+    return (
+      <em>{this.props.children}</em>
+    )
+  }
+}
+
+class InlineBoldComponent extends Component {
+  render() {
+    return (
+      <strong>{this.props.children}</strong>  
+    )
+  }
+}
+
+function createDecorators() {
+  return new CompositeDecorator([
+      { strategy: findNoteEntities, component: InlineNoteComponent },
+      { strategy: italicSearchStrategy, component: InlineItalicComponent },
+      { strategy: boldSearchStrategy, component: InlineBoldComponent }
+    ]);
+}
+
 // #TODO: better names for the components!
 class DETextArea extends Component {
   constructor(props) {
     super(props);
 
-    const decorator = new CompositeDecorator([
-      { strategy: findNoteEntities, component: InlineNoteComponent }
-    ]);
+    const decorator = createDecorators();
 
     this.state = {
       editorState: EditorState.createWithContent(ContentState.createFromText(defaultText), decorator),
@@ -82,18 +118,25 @@ class DETextArea extends Component {
     this.componentDidMount = () => this.updateSidebar();
     this.handleBeforeInput = (chars) => { this.updateSidebar(); return false; }
   }
-
+  
+  forceRender() {
+      var editorState = this.state.editorState;
+      var content = editorState.getCurrentContent();
+      var newState = EditorState.createWithContent(content, createDecorators());
+      this.setState({editorState: newState});
+  }
+  
   updateSidebar() {
     var blockMap = this.state.editorState.getCurrentContent().getBlockMap();
     var content = this.state.editorState.getCurrentContent();
     var sidebarMetadata = this.state.metadata;
     var ourTextDelta = 0;
-    var noteNum = 1;
+    var needsReRender = false;
 
     // We want to go through all blocks of text and replace all occurences of 
     // [[this is a comment]] with just a single char ('1') and a NOTE entity
     // attached which then holds the actual comment. The entity handles rendering
-    // the '1' as <sup>1</sup.
+    // the '1' as <sup>1</sup>
     // 
     // Because we're replacing in-line while iterating through the content of
     // the block, the ranges sent from our searcher algorithm aren't trustable.
@@ -106,10 +149,17 @@ class DETextArea extends Component {
         var startIndex = start - ourTextDelta;
         var endIndex = end - ourTextDelta;
 
-        var noteNum = sidebarMetadata.length + 1;
-        sidebarMetadata.push({comment: text, position: startIndex});
+        var metadataObj = {comment: text, position: startIndex};
+        // we don't want to re-add anything that's already been parsed so
+        // ... #TODO: there's gotta be a better way!
+        for (var indx in sidebarMetadata) {
+          if (sidebarMetadata[indx].comment === metadataObj.comment &&
+            sidebarMetadata[indx].position === metadataObj.position) {
+            return; // returns out of the noteSearchStrategy callback for this iteration
+          }
+        }
 
-        const previousEntity = block.getEntityAt(startIndex);
+        var noteNum = sidebarMetadata.length + 1;
         var entityKey = Entity.create('NOTE', 'IMMUTABLE', {note: text, number: noteNum});
         var selectionState = SelectionState.createEmpty(block.getKey());
         var actualSelection = selectionState.merge({
@@ -118,13 +168,20 @@ class DETextArea extends Component {
           anchorOffset: startIndex
         });
         content = Modifier.replaceText(content, actualSelection, '' + noteNum, null, entityKey);
-
+        sidebarMetadata.push(metadataObj);
         // See note above. we wanna get 1 minus the length of text + "[[" and "]]" so...
         ourTextDelta += text.length + 3;
+        needsReRender = true;
       });
     });
     let updatedState = EditorState.push(this.state.editorState, content, 'apply-entity');
     this.setState({editorState: updatedState, metadata: sidebarMetadata});
+    if (needsReRender) {
+      // If a new comment was added, at this point the contentstate includes 
+      // "blahblahblah <sup>4</sup>", but our rendered UI still shows "blahblahblah [[...]]"
+      // so we gotta do a really ugly re-render hack: https://github.com/facebook/draft-js/issues/458
+      forceRender();
+    }
   }
 
   render() {
