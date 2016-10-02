@@ -1,31 +1,11 @@
 import React, { Component } from 'react';
 import electron, { ipcRenderer } from 'electron';
+
+import Parchment from 'parchment';
+import Quill from 'quill';
+import DarkQuill, { InlineComment } from './darkquill';
+
 import styles from './styles.less'
-
-const noteRegex = /\[\[(.+?)\]\]/g;
-const italicRegex = /_.+?_/g;
-const boldRegex = /\*.+?\*/g;
-
-function searchStrategy(regex, content, callback) {
-  let text = content;
-  let matchArr, start;
-  while ((matchArr = regex.exec(text)) !== null) {
-    start = matchArr.index;
-    callback(start, matchArr[0].length, matchArr[0]);
-  }
-}
-
-function noteSearchStrategy(content, callback) {
-  searchStrategy(noteRegex, content, callback);
-}
-
-function italicSearchStrategy(content, callback) {
-  searchStrategy(italicRegex, content, callback);
-}
-
-function boldSearchStrategy(content, callback) {
-  searchStrategy(boldRegex, content, callback);
-}
 
 // #TODO: Make this render a group of CommentsSideBarItem (or a better name!!!!)
 // which then have on click listeners that change the main editor's focus (how??) to
@@ -57,54 +37,27 @@ class DETextArea extends Component {
     super(props);
 
     this.componentDidMount = () => { this.initQuill(); }
-    this.handleBeforeInput = (chars) => { this.updateSidebar(); return false; }
   }
   
   initQuill() {
+    Quill.register('modules/darkQuill', DarkQuill);
+
     var editor = new Quill('#editor', {
-      theme: 'snow'
+      theme: 'snow',
+      modules: {
+        darkQuill: true
+      }
     });
 
-    let reactThis = this;
-    editor.on('text-change', function(delta, oldDelta, source) {
-      var insertEvents = delta.ops.filter(op => op.hasOwnProperty('insert'));
-      if (insertEvents.length === 0)
-        return;
-
-      var lastChar = insertEvents[insertEvents.length - 1].insert;
-      var cursorIndex = editor.getSelection().index;
-      var editorContents = editor.getContents(0, cursorIndex);
-      var fullContents = editorContents.ops.map(op => op.insert).join("");
-
-      italicSearchStrategy(fullContents, (start, length, item) => {
-        var currentFormat = editor.getFormat(start, length);
-        if (currentFormat !== null && currentFormat.italic) {
-          return;
-        }
-        editor.formatText(start, length, 'italic', true);
-        editor.format('italic', false);
+    var reactThis = this;
+    let sidebarItems;
+    editor.on('text-change', (delta, oldDelta, source) => {
+      sidebarItems = [];
+      let commentOps = editor.getContents().ops.filter(op => op.hasOwnProperty('attributes') && op.attributes.hasOwnProperty(InlineComment.blotName));
+      commentOps.forEach(op => {
+        sidebarItems.push({comment: op.attributes[InlineComment.blotName]});
       });
-
-      boldSearchStrategy(fullContents, (start, length, item) => {
-        var currentFormat = editor.getFormat(start, length);
-        if (currentFormat !== null && currentFormat.bold) {
-          return;
-        }
-        editor.formatText(start, length, 'bold', true);
-        editor.format('bold', false);
-      });
-
-      var sidebarMetadata = reactThis.state.metadata;
-      noteSearchStrategy(fullContents, (start, length, item) => {
-        var noteObj = {comment: item, position: start, length: length};
-        sidebarMetadata.forEach(n => {
-          if (n.comment == noteObj.comment && n.position == noteObj.position)
-            return;
-        });
-        sidebarMetadata.push(noteObj);
-      });
-
-      reactThis.setState({metadata: sidebarMetadata});
+      reactThis.setState({metadata: sidebarItems});
     });
   }
 

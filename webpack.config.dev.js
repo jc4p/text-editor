@@ -41,7 +41,7 @@ var config = {
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin([
-      { from: 'node_modules/quill/dist', to: __dirname + '/dist/quill' }
+      { from: { glob: 'node_modules/quill/dist/**.css' }, to: __dirname + '/dist/quill', flatten: true }
     ])
   ]
 };
