@@ -1,5 +1,6 @@
 var webpack = require('webpack');
 var webpackTargetElectronRenderer = require('webpack-target-electron-renderer');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 var config = {
   entry: [
@@ -21,7 +22,7 @@ var config = {
       loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!less'
     },
     {
-      test: /Draft\.css$/,
+      test: /quill.*css$/,
       loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
     },
     {
@@ -39,6 +40,9 @@ var config = {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
+    new CopyWebpackPlugin([
+      { from: 'node_modules/quill/dist', to: __dirname + '/dist/quill' }
+    ])
   ]
 };
 

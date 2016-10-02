@@ -3,12 +3,12 @@
 html, body {
   overflow: hidden;
   margin: 0;
-  padding: 0em 0.5em;
   background: #fff;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
   width: 100%;
   height: 100%;
+  -webkit-app-region: drag;
 }
 
 body > div {
@@ -24,23 +24,27 @@ body > div {
 .editorRoot {
   width: 100%;
   height: 100%;
-  margin: 0.5em 0;
   box-sizing: content-box;
   display: flex;
   flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
 }
 
 .editorContainer {
   cursor: text;
-  width: 75%;
-  height: 96%; // height: 100% means 100% of entire viewport so the 0.5em bottom margin will be gone :/
-  padding-right: 0.5em;
   font-family: 'Roboto Mono', monospace;
+  flex-grow: 2;
+}
+
+.editorQuillContainer {
+  -webkit-app-region: no-drag;
 }
 
 .sidebar {
   background-color: #F7F7F7;
-  width: 25%;
+  border: 1px solid black;
+  flex-basis: 28%;
 }
 
 .inlineNote {
