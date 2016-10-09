@@ -1,6 +1,7 @@
 import styles from './styles.less'
 import Quill from 'quill';
 var Inline = Quill.import('blots/inline');
+var Code = Quill.import('formats/code');
 
 class InlineComment extends Inline {
   static create(value) {
@@ -25,6 +26,7 @@ InlineComment.tagName = 'sup';
 const noteRegex = /\[\[(.+?)\]\]/g;
 const italicRegex = /_.+?_/g;
 const boldRegex = /\*.+?\*/g;
+const codeRegex = /`.+?`/g;
 
 function searchStrategy(regex, content, callback) {
   let text = content;
@@ -45,6 +47,10 @@ function italicSearchStrategy(content, callback) {
 
 function boldSearchStrategy(content, callback) {
   searchStrategy(boldRegex, content, callback);
+}
+
+function codeSearchStrategy(content, callback) {
+  searchStrategy(codeRegex, content, callback);
 }
 
 function DarkQuill(quill, options) {
@@ -82,6 +88,15 @@ function DarkQuill(quill, options) {
         }
         editor.formatText(start, length, 'bold', true);
         editor.format('bold', false);
+        editor.deleteText(start, 1);
+        editor.deleteText(start + length - 2, 1);
+      });
+
+      codeSearchStrategy(fullContents, (start, length, item) => {
+        var currentFormat = editor.getFormat(start, length);
+        if (currentFormat !== null && currentFormat.bold) return;
+        editor.formatText(start, length, Code.blotName, true);
+        editor.format(Code.blotName, false);
         editor.deleteText(start, 1);
         editor.deleteText(start + length - 2, 1);
       });
