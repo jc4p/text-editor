@@ -51,6 +51,7 @@ class DETextArea extends Component {
 
     var reactThis = this;
     let sidebarItems;
+    editor.focus();
     editor.on('text-change', (delta, oldDelta, source) => {
       sidebarItems = [];
       let commentOps = editor.getContents().ops.filter(op => op.hasOwnProperty('attributes') && op.attributes.hasOwnProperty(InlineComment.blotName));

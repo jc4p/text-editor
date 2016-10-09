@@ -1,3 +1,4 @@
+import styles from './styles.less'
 import Quill from 'quill';
 var Inline = Quill.import('blots/inline');
 
@@ -5,6 +6,7 @@ class InlineComment extends Inline {
   static create(value) {
     let node = super.create(value);
     node.dataset.comment = value;
+    node.classList.add(styles.inlineNote);
     return node;
   }
 
@@ -50,6 +52,9 @@ function DarkQuill(quill, options) {
 
   var editor = quill;
   editor.on('text-change', (delta, oldDelta, source) => {
+    // debounce all event listener callbacks to deal with timing issues (this
+    // event listener is called mid-event listener consumptions, not after)
+    window.setTimeout(() => {
       var insertEvents = delta.ops.filter(op => op.hasOwnProperty('insert'));
       if (insertEvents.length === 0 || editor.getSelection() === null)
         return;
@@ -66,6 +71,8 @@ function DarkQuill(quill, options) {
         }
         editor.formatText(start, length, 'italic', true);
         editor.format('italic', false);
+        editor.deleteText(start, 1);
+        editor.deleteText(start + length - 2, 1);
       });
 
       boldSearchStrategy(fullContents, (start, length, item) => {
@@ -75,6 +82,8 @@ function DarkQuill(quill, options) {
         }
         editor.formatText(start, length, 'bold', true);
         editor.format('bold', false);
+        editor.deleteText(start, 1);
+        editor.deleteText(start + length - 2, 1);
       });
 
       noteSearchStrategy(fullContents, (start, length, item) => {
@@ -82,9 +91,13 @@ function DarkQuill(quill, options) {
         if (currentFormat !== null && currentFormat.hasOwnProperty(InlineComment.blotName)) {
           return;
         }
-        editor.formatText(start, length, InlineComment.blotName, item);
+        editor.deleteText(start, length);
+        editor.insertText(start, "1 ");
+        editor.setSelection(start + 2, 0);
+        editor.formatText(start, 1, InlineComment.blotName, item.substring(2, length - 2));
         editor.format(InlineComment.blotName, null);
       });
+    }, 1);
     });
 }
 
