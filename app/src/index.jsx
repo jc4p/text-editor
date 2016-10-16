@@ -38,27 +38,22 @@ class DETextArea extends Component {
 
     this.componentDidMount = () => { this.initQuill(); }
   }
+
+  onCommentsUpdated() {
+    var comments = this.editor.getModule("darkQuill").comments.get();
+    this.setState({metadata: comments});
+  }
   
   initQuill() {
     Quill.register('modules/darkQuill', DarkQuill);
 
-    var editor = new Quill('#editor', {
+    this.editor = new Quill('#editor', {
       theme: 'snow',
       modules: {
-        darkQuill: true
+        darkQuill: {
+          onCommentsUpdated: () => { this.onCommentsUpdated(); }
+        }
       }
-    });
-
-    var reactThis = this;
-    let sidebarItems;
-    editor.focus();
-    editor.on('text-change', (delta, oldDelta, source) => {
-      sidebarItems = [];
-      let commentOps = editor.getContents().ops.filter(op => op.hasOwnProperty('attributes') && op.attributes.hasOwnProperty(InlineComment.blotName));
-      commentOps.forEach(op => {
-        sidebarItems.push({comment: op.attributes[InlineComment.blotName]});
-      });
-      reactThis.setState({metadata: sidebarItems});
     });
   }
 
