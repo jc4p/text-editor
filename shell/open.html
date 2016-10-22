@@ -3,10 +3,20 @@
   <head>
     <meta charset="UTF-8">
     <title>Open Project</title>
+    <link href="../dist/open.css" rel="stylesheet">
   </head>
   <body>
     <div id="root">
     <h1>Project Source:</h1>
     </div>
+  <script>
+    (function() {
+      const script = document.createElement('script');
+      script.src = process.env.ENV === 'dev' ? 'http://localhost:9000/dist/open.bundle.js' : '../dist/open.bundle.js';
+      script.async = true;
+      var s0 = document.getElementsByTagName('script')[0];
+      s0.parentNode.insertBefore(script, s0);
+    }());
+  </script>
   </body>
 </html>

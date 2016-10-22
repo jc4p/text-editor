@@ -14,7 +14,7 @@
   <script>
     (function() {
       const script = document.createElement('script');
-      script.src = process.env.ENV === 'dev' ? 'http://localhost:9000/dist/bundle.js' : '../dist/bundle.js';
+      script.src = process.env.ENV === 'dev' ? 'http://localhost:9000/dist/app.bundle.js' : '../dist/app.bundle.js';
       script.async = true;
       var s0 = document.getElementsByTagName('script')[0];
       s0.parentNode.insertBefore(script, s0);
