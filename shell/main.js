@@ -115,8 +115,8 @@ const menuTemplate = [
 ]
 
 if (process.platform === 'darwin') {
-  const name = require('electron').remote.app.getName()
-  template.unshift({
+  const name = app.getName()
+  menuTemplate.unshift({
     label: name,
     submenu: [
       {
@@ -150,7 +150,7 @@ if (process.platform === 'darwin') {
     ]
   })
   // Edit menu.
-  template[1].submenu.push(
+  menuTemplate[1].submenu.push(
     {
       type: 'separator'
     },
@@ -167,7 +167,7 @@ if (process.platform === 'darwin') {
     }
   )
   // Window menu.
-  template[3].submenu = [
+  menuTemplate[3].submenu = [
     {
       label: 'Close',
       accelerator: 'CmdOrCtrl+W',
