@@ -1,6 +1,7 @@
 const electron = require('electron')
 const remote = electron.remote
-require("./open.scss");
+
+var css = require("./open.scss");
 
 document.addEventListener('keydown', event => {
     if (event.key === 'Escape' || event.keyCode === 27) {

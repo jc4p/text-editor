@@ -11,6 +11,7 @@ var config = {
       './app/index'
     ],
     open: [
+      'webpack-hot-middleware/client?reload=true&path=http://localhost:9000/__webpack_hmr',
       './shell/open'
     ],
   },
@@ -26,7 +27,7 @@ var config = {
     },
     {
       test: /app\/src.*\.scss$/,
-      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass'
+      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass?sourceMap'
     },
     {
       test: /quill.*css$/,
@@ -34,7 +35,7 @@ var config = {
     },
     {
       test: /shell\/.*\.scss$/,
-      loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!sass?sourceMap'),
+      loader: 'style!css?sourceMap&importLoaders=1!sass?sourceMap'
     },
     {
       test: /\.png|\.svg$/,
@@ -53,8 +54,9 @@ var config = {
     includePaths: [path.resolve(__dirname, 'node_modules')]
   },
   plugins: [
+    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new ExtractTextPlugin('[name].css'),
+    new webpack.NoErrorsPlugin(),
     new CopyWebpackPlugin([
       { from: { glob: 'node_modules/quill/dist/**.css' }, to: __dirname + '/dist/quill', flatten: true }
     ])
