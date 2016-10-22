@@ -49,7 +49,6 @@ class CommentStore {
   // Sorts the comments in the array based on their position
   // in the text editor
   sort() {
-    var idsAndIndex = new Map();
     // use the cursor to find the Parchment instance
     const blot = Parchment.find(document.getSelection().getRangeAt(0).startContainer.parentNode);
     let block = blot;
