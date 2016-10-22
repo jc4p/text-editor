@@ -18,8 +18,8 @@ var config = {
       loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
     },
     {
-      test: /\.less$/,
-      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!less'
+      test: /\.scss$/,
+      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass'
     },
     {
       test: /quill.*css$/,

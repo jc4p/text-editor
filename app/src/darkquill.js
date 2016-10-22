@@ -1,4 +1,4 @@
-import styles from './styles.less'
+import styles from './styles.scss'
 import Quill from 'quill';
 
 const Parchment = Quill.import('parchment');

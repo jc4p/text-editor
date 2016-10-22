@@ -5,7 +5,7 @@ import Parchment from 'parchment';
 import Quill from 'quill';
 import DarkQuill, { InlineComment } from './darkquill';
 
-import styles from './styles.less'
+import styles from './styles.scss'
 
 // #TODO: Make this render a group of CommentsSideBarItem (or a better name!!!!)
 // which then have on click listeners that change the main editor's focus (how??) to

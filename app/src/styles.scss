@@ -1,4 +1,14 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto+Mono);
+@mixin fontFace($family,$src,$style: normal,$weight: normal) {
+  @font-face {
+    font-family: $family;
+    src: url('#{$src}.woff') format('woff'),
+      url('#{$src}.ttf') format('truetype'),
+      url('#{$src}.svg##{$family}') format('svg');
+
+    font-style: $style;
+    font-weight: $weight;
+  }
+}
 
 html, body {
   overflow: hidden;
@@ -33,7 +43,7 @@ body > div {
 
 .editorContainer {
   cursor: text;
-  font-family: 'Roboto Mono', monospace;
+  @include fontFace('Roboto Mono', 'https://fonts.googleapis.com/css?family=Roboto+Mono', 'monospace');
   flex: 3 0 0;
 }
 
