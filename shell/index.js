@@ -1,11 +1,19 @@
-const electron = require('electron')
+import electron, { ipcMain } from 'electron';
+const Bottle = require('bottlejs')
 const app = electron.app
 const BrowserWindow = electron.BrowserWindow
 const Menu = electron.Menu
+const dialog = electron.dialog
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow, projectWindow
+
+ipcMain.on('open-file', (event, arg) => {
+  if (mainWindow) {
+    mainWindow.webContents.send('open-file', arg);
+  }
+})
 
 const menuTemplate = [
   {
@@ -17,8 +25,8 @@ const menuTemplate = [
         click (item, focusedWindow) { }
       },
       {
-        label: 'Open Project',
-        accelerator: 'CmdOrCtrl+Shift+O',
+        label: 'Open Project Manager',
+        accelerator: 'CmdOrCtrl+Shift+P',
         click (item, focusedWindow) { openProjectWindow() }
       }
     ]
@@ -200,7 +208,7 @@ function createWindow() {
   mainWindow.loadURL(`file://${__dirname}/index.html`)
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 
   // Emitted when the window is closed.
   mainWindow.on('closed', () => { mainWindow = null })

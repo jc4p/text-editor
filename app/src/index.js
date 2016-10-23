@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import electron, { ipcRenderer } from 'electron';
+import electron, { remote, ipcRenderer } from 'electron';
 
 import Parchment from 'parchment';
 import Quill from 'quill';
@@ -36,7 +36,12 @@ class DETextArea extends Component {
   constructor(props) {
     super(props);
 
+    ipcRenderer.on('open-file', (event, arg) => { this.openFile(arg) });
     this.componentDidMount = () => { this.initQuill(); }
+  }
+
+  openFile(arg) {
+    console.log("Need to open: " + arg);
   }
 
   onCommentsUpdated() {

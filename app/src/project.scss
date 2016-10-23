@@ -1,0 +1,38 @@
+@import 'normalize.css/normalize';
+@import 'milligram/dist/milligram';
+
+.openContainer {
+  padding: 10px;
+}
+
+.sourceContainer {
+  display: inline-block;
+}
+
+.sourceContainer strong {
+  display: inline-block;
+}
+
+.sourceContainer div {
+  display:inline-block;
+}
+
+#source-buttons {
+  margin-left: 5px;
+}
+
+.sourceContainer button {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-right: 5px;
+}
+
+#searchBox {
+  margin-bottom: 0px;
+}
+
+.cube-grid {
+  width: 75px;
+  height: 75px;
+  margin: 110px auto;
+}

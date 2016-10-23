@@ -47,8 +47,10 @@
     "bottlejs": "^1.5.0",
     "chokidar": "^1.6.1",
     "extract-text-webpack-plugin": "^1.0.1",
+    "glob": "^7.1.1",
     "milligram": "^1.1.0",
     "node-sass": "^3.10.1",
+    "react-spinkit": "^1.1.11",
     "sass-loader": "^4.0.2"
   }
 }

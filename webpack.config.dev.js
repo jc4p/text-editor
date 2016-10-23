@@ -12,7 +12,7 @@ var config = {
     ],
     open: [
       'webpack-hot-middleware/client?reload=true&path=http://localhost:9000/__webpack_hmr',
-      './shell/open'
+      './app/project'
     ],
   },
   module: {
@@ -23,18 +23,23 @@ var config = {
     },
     {
       test: /\.css$/,
-      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
+      loade: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader',
+      exclude: /.*react-spinkit.*/
     },
     {
       test: /app\/src.*\.scss$/,
-      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass?sourceMap'
+      loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader!sass?sourceMap',
+      exclude: /.*project.*/
     },
     {
       test: /quill.*css$/,
       loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]!postcss-loader'
     },
+    { test: /react-spinkit.*css$/,
+      loader: 'style!css-loader?sourceMap&importLoaders=1'
+    },
     {
-      test: /shell\/.*\.scss$/,
+      test: /project\.scss$/,
       loader: 'style!css?sourceMap&importLoaders=1!sass?sourceMap'
     },
     {
