@@ -175,7 +175,7 @@ if (process.platform === 'darwin') {
     }
   )
   // Window menu.
-  menuTemplate[3].submenu = [
+  menuTemplate[4].submenu = [
     {
       label: 'Close',
       accelerator: 'CmdOrCtrl+W',
