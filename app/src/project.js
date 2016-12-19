@@ -80,7 +80,7 @@ class ProjectService {
   }
 }
 
-class ProjectManager extends Component {
+export default class ProjectManager extends Component {
   state = {
     service: new ProjectService()
   }
@@ -123,7 +123,6 @@ class ProjectManager extends Component {
         var folderPath = folders[0];
         glob(folderPath + "/**/*\.+(md|markdown|js)", (er, files) => { this.filesFound(folderPath, files) });
         this.state.service.setIsLoading();
-        //ipcRenderer.send('open-file', folderPath);
       });
     });
 
@@ -164,13 +163,5 @@ class ProjectManager extends Component {
       }
     </div>
     )
-  }
-}
-
-export default class App extends Component {
-  render() {
-    return (
-      <ProjectManager />
-    );
   }
 }

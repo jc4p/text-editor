@@ -1,22 +1,19 @@
 import 'babel-polyfill'; // generators
-import React from 'react';
-import { render as renderReact } from 'react-dom';
+import React from 'react'; // react stuff
+import { render } from 'react-dom';
 
-// #TODO: state handling
-//const state = JSON.parse(localStorage.getItem('state'));
+import App from './src'; // app stuff
 
-let App = require('./src').default;
-
-const render = (Component) => {
-  renderReact(<Component />, document.getElementById('root'));
+const renderView = (Component) => {
+  render(<Component />, document.getElementById('root'));
 };
 
 // sets up live reloading of the main component
 if (module.hot) {
   module.hot.accept('./src', function() {
     let newApp = require('./src').default;
-    render(newApp);
+    renderView(newApp);
   });
 }
 
-render(App);
+renderView(App);

@@ -13,7 +13,7 @@ var config = {
     open: [
       'webpack-hot-middleware/client?reload=true&path=http://localhost:9000/__webpack_hmr',
       './app/project'
-    ],
+    ]
   },
   module: {
     loaders: [{

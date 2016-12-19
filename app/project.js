@@ -1,19 +1,19 @@
 import 'babel-polyfill'; // generators
-import React from 'react';
-import { render as renderReact } from 'react-dom';
+import React from 'react'; // react
+import { render } from 'react-dom';
 
-let App = require('./src/project').default;
+import ProjectManager from './src/project'; // app stuff
 
-const render = (Component) => {
-  renderReact(<Component />, document.getElementById('root'));
+const renderView = (Component) => {
+  render(<Component />, document.getElementById('root'));
 };
 
 // sets up live reloading of the main component
 if (module.hot) {
-  module.hot.accept('./src/project', function() {
-    let newApp = require('./src/project').default;
-    render(newApp);
+  module.hot.accept('./src', function() {
+    let newView = require('./src/project').default;
+    renderView(newView);
   });
 }
 
-render(App);
+renderView(ProjectManager);
