@@ -33,7 +33,6 @@
     "express": "^4.14.0",
     "moment": "^2.14.1",
     "postcss-loader": "^0.9.1",
-    "quill": "^1.1.1",
     "randomstring": "^1.1.5",
     "react": "^15.3.0",
     "react-dom": "^15.3.0",
@@ -50,6 +49,7 @@
     "glob": "^7.1.1",
     "milligram": "^1.1.0",
     "node-sass": "^3.10.1",
+    "quill": "1.1.7",
     "react-spinkit": "^1.1.11",
     "sass-loader": "^4.0.2"
   }
