@@ -9,7 +9,7 @@ The React parts are mostly contained in `app/`. The only real Electron stuff rn 
 
 Before you start, make sure you have a version of `node` & `npm` installed. 
 
-1) Clone this repo. Open up a terminal to the cloned folder path, and use [yarn](https://yarnpkg.com/), an `npm` alternative. `npm install yarn -g` if you don't have it. Then, just `yarn` to fetch all dependencies.
+1) Clone this repo. Open up a terminal to the cloned folder path, and use [yarn](https://yarnpkg.com/), an `npm` alternative. They have some more secure instructions, or you can just `npm install yarn -g` if you don't want to use `brew` or whatever. Then, just run `yarn` without any arguments to fetch all dependencies.
 
 2) To run the app you have two options:
 
