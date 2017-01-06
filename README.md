@@ -9,10 +9,10 @@ The React parts are mostly contained in `app/`. The only real Electron stuff rn 
 
 Before you start, make sure you have `node` & `npm` installed. I also use `nvm` to manage different node versions, but you can use whatever you want.
 
-1) Clone this repo and run `npm install` to fetch all dependencies needed to compile and run.
+1) Clone this repo and run `[yarn](https://yarnpkg.com/)` to fetch all dependencies needed to compile and run.
 
 2) To run the app you have two options:
 
   - `npm start` will compile the React bundle then open up the Electron app.
 
-  - `npm run dev` will start the live-update server mentioned above and open up the Electron app. This will live reload any changes made.
+  - `npm run dev` will start the live-update server mentioned above and open up the Electron app. This will live reload any local source code changes you make. You don't need to run this if you're not working on the app itself.
